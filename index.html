@@ -1958,6 +1958,12 @@ html:not(#z)[data-pal=jr] .ctoast{background:var(--btn)!important;color:var(--bt
 /* botón Buscar redondo */
 html:not(#z)[data-pal=jr] #srchB{border-radius:999px!important}
 @media(max-width:860px){html:not(#z)[data-pal=jr] #srchB{width:38px;height:38px;padding:0!important;display:grid!important;place-items:center}html:not(#z)[data-pal=jr] #srchB svg{width:18px;height:18px}}
+
+/* ajustes 13-nov (6) */
+html:not(#z)[data-pal=jr] #zvM{touch-action:none!important}
+html:not(#z)[data-pal=jr] .jr-sort select{color:var(--ink)!important;background:transparent!important;border:0!important;outline:none!important;box-shadow:none!important;-webkit-tap-highlight-color:transparent}
+html:not(#z)[data-pal=jr] .jr-sort select:focus,html:not(#z)[data-pal=jr] .jr-sort select:focus-visible{outline:none!important;border:0!important;box-shadow:none!important}
+html:not(#z)[data-pal=jr] .jr-sort select option{background:var(--bg);color:var(--ink)}
 </style>
 </head>
 <body>
@@ -3876,7 +3882,7 @@ addEventListener('resize',jrStick);
 document.addEventListener('load',e=>{if(e.target.closest&&e.target.closest('#lbG'))jrStick()},true);
 /* visor de fotos: la rueda del mouse pasa a la foto siguiente o anterior, y flecha para volver */
 {const zv=$('zv');if(zv){const b=document.createElement('button');b.type='button';b.id='jrZB';b.setAttribute('aria-label','Volver');b.title='Volver';b.innerHTML=JR_BACK;b.onclick=()=>zv.close();zv.prepend(b);
-  {let x0=null,y0=0;const M=$('zvM')||zv;M.addEventListener('touchstart',e=>{if(e.touches.length!==1||$('zvI').classList.contains('z')){x0=null;return}x0=e.touches[0].clientX;y0=e.touches[0].clientY},{passive:true});
+  {let x0=null,y0=0;const M=$('zvM')||zv;M.addEventListener('touchstart',e=>{if(e.touches.length!==1||$('zvI').classList.contains('z')||(window.jrZS&&jrZS())){x0=null;return}x0=e.touches[0].clientX;y0=e.touches[0].clientY},{passive:true});
    M.addEventListener('touchend',e=>{if(x0===null)return;const t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;x0=null;if(Math.abs(dx)<45||Math.abs(dx)<Math.abs(dy)*1.2||zA.length<2)return;zvShow((zI+(dx<0?1:-1)+zA.length)%zA.length)},{passive:true})}
   {const _s=zvShow;zvShow=function(){const x=_s.apply(this,arguments);try{const b=document.querySelector('#zvT button.on');if(b)b.scrollIntoView({block:'nearest',inline:'center'})}catch(e){}return x}}
   let cool=0,acc=0;zv.addEventListener('wheel',e=>{if($('zvI').classList.contains('z'))return;e.preventDefault();if(Date.now()<cool)return;acc+=e.deltaY;if(Math.abs(acc)<30)return;const d=acc>0?1:-1;acc=0;const n=zI+d;if(n<0||n>=zA.length)return;cool=Date.now()+380;zvShow(n)},{passive:false})}}
@@ -3906,6 +3912,24 @@ $('jrAE').textContent=`Enviamos a toda Colombia. Envío GRATIS en compras desde 
  $('jrCL').onclick=e=>{e.preventDefault();if(document.body.classList.contains('pv'))pvClose();scrollTo({top:0,behavior:'smooth'})}}
 try{jrPhotos()}catch(e){}
 try{jrBuild();cartRender()}catch(e){}
+/* ===== visor en celular: pellizcar para acercar/alejar, arrastrar para mover y doble toque para volver al tamaño normal ===== */
+(()=>{const M=$('zvM'),I=$('zvI');if(!M||!I)return;let S=1,X=0,Y=0,S0=1,d0=0,X0=0,Y0=0,sx=0,sy=0,lt=0,lastTap=0,mv=false;
+ const lim=()=>{const w=I.offsetWidth,h=I.offsetHeight,mx=w*(S-1)/2,my=h*(S-1)/2;X=Math.max(-mx,Math.min(mx,X));Y=Math.max(-my,Math.min(my,Y))};
+ const ap=()=>{I.style.transition='transform .05s';I.style.transform=S>1.01?`translate(${X}px,${Y}px) scale(${S})`:'';I.style.transformOrigin='center center'};
+ const reset=()=>{S=1;X=0;Y=0;I.style.transition='transform .25s';I.style.transform=''};
+ window.jrZS=()=>S>1.01;
+ const D=t=>Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);
+ M.addEventListener('touchstart',e=>{lt=Date.now();mv=false;if(e.touches.length===2){d0=D(e.touches);S0=S}else if(e.touches.length===1){sx=e.touches[0].clientX;sy=e.touches[0].clientY;X0=X;Y0=Y}},{passive:true});
+ M.addEventListener('touchmove',e=>{lt=Date.now();if(e.touches.length===2&&d0){e.preventDefault();mv=true;S=Math.max(1,Math.min(4,S0*D(e.touches)/d0));lim();ap()}
+   else if(e.touches.length===1&&S>1.01){e.preventDefault();const dx=e.touches[0].clientX-sx,dy=e.touches[0].clientY-sy;if(Math.abs(dx)+Math.abs(dy)>6)mv=true;X=X0+dx;Y=Y0+dy;lim();ap()}},{passive:false});
+ M.addEventListener('touchend',e=>{lt=Date.now();if(e.touches.length<2)d0=0;if(e.touches.length)return;if(S<1.08){reset();}
+   if(!mv&&e.changedTouches.length===1){const n=Date.now();if(n-lastTap<320){lastTap=0;if(S>1.01)reset();else{S=2.5;X=0;Y=0;I.style.transition='transform .25s';I.style.transform=`scale(${S})`}}else lastTap=n}},{passive:true});
+ /* en pantallas táctiles el toque ya no usa el zoom del computador */
+ I.addEventListener('click',e=>{if(Date.now()-lt<700){e.stopImmediatePropagation();e.preventDefault()}},true);
+ {const _s=zvShow;zvShow=function(){reset();I.classList.remove('z');return _s.apply(this,arguments)}}
+ $('zv').addEventListener('close',()=>{reset();I.classList.remove('z')});
+})();
+
 /* ===== menú hamburguesa para celular ===== */
 {const IG=(CFG.SOCIAL||{}).Instagram||'',FB=(CFG.SOCIAL||{}).Facebook||'',TT=(CFG.SOCIAL||{}).TikTok||'';
  
