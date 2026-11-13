@@ -1951,6 +1951,13 @@ html[data-pal=jr] .jr-mh .jr-lg{height:52px}
 
 /* tema oscuro: el logo de la esquina se distingue sobre fotos claras */
 html[data-pal=jr][data-theme=dark] .jr-clogo{filter:drop-shadow(0 1px 3px rgba(0,0,0,.7)) drop-shadow(0 0 12px rgba(0,0,0,.35))}
+
+/* ajustes 13-nov (5) */
+/* aviso del carrito legible en los dos temas */
+html:not(#z)[data-pal=jr] .ctoast{background:var(--btn)!important;color:var(--btnx)!important}
+/* botón Buscar redondo */
+html:not(#z)[data-pal=jr] #srchB{border-radius:999px!important}
+@media(max-width:860px){html:not(#z)[data-pal=jr] #srchB{width:38px;height:38px;padding:0!important;display:grid!important;place-items:center}html:not(#z)[data-pal=jr] #srchB svg{width:18px;height:18px}}
 </style>
 </head>
 <body>
@@ -3873,7 +3880,11 @@ document.addEventListener('load',e=>{if(e.target.closest&&e.target.closest('#lbG
    M.addEventListener('touchend',e=>{if(x0===null)return;const t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;x0=null;if(Math.abs(dx)<45||Math.abs(dx)<Math.abs(dy)*1.2||zA.length<2)return;zvShow((zI+(dx<0?1:-1)+zA.length)%zA.length)},{passive:true})}
   {const _s=zvShow;zvShow=function(){const x=_s.apply(this,arguments);try{const b=document.querySelector('#zvT button.on');if(b)b.scrollIntoView({block:'nearest',inline:'center'})}catch(e){}return x}}
   let cool=0,acc=0;zv.addEventListener('wheel',e=>{if($('zvI').classList.contains('z'))return;e.preventDefault();if(Date.now()<cool)return;acc+=e.deltaY;if(Math.abs(acc)<30)return;const d=acc>0?1:-1;acc=0;const n=zI+d;if(n<0||n>=zA.length)return;cool=Date.now()+380;zvShow(n)},{passive:false})}}
-{const _c=cartRender;cartRender=function(){const x=_c.apply(this,arguments);try{const n=cart.reduce((t,i)=>t+(+i.q||0),0),h=$('jrCartH');if(h)h.textContent=n?`(${n} ${n===1?'producto':'productos'})`:''}catch(e){}return x}}
+{const _c=cartRender;cartRender=function(){const x=_c.apply(this,arguments);try{const cn=cart.reduce((t,i)=>t+(+i.q||0),0),pn=JR.cn||0;JR.cn=cn;
+  /* el carrito se cierra solo cuando queda vacío */
+  if(pn>0&&cn===0&&$('cartP').classList.contains('open'))setTimeout(()=>{if(!cart.length)cOpen(false)},500);
+  /* si estás dentro de un producto, se actualiza el botón Agregar (antes se quedaba en "sin stock") */
+  if(cn!==pn&&lbP&&document.body.classList.contains('pv'))lbOpts()}catch(e){}try{const n=cart.reduce((t,i)=>t+(+i.q||0),0),h=$('jrCartH');if(h)h.textContent=n?`(${n} ${n===1?'producto':'productos'})`:''}catch(e){}return x}}
 /* clics del diseño nuevo: menú, pestañas, tarjetas de explorar, pie de página y migas de pan */
 document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('[data-jk]');if(!a||a.closest('#adm'))return;e.preventDefault();const k=a.dataset.jk;
   if(k==='nos'){const b=document.querySelector('[data-pol="qui"]');if(b)b.click();return}
