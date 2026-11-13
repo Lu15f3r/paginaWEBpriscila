@@ -2262,6 +2262,11 @@ html[data-pal=jr] #zvM{touch-action:pan-y pinch-zoom}
 @media(max-width:860px){
  html:not(#z)[data-pal=jr] #jrSpotS .jr-hd .jr-lk{white-space:normal!important;justify-self:start!important;font-size:14px;line-height:1.4;max-width:100%;overflow-wrap:anywhere}
 }
+
+/* visor: flecha de volver y X a la misma altura y del mismo tamaño */
+html:not(#z)[data-pal=jr] #jrZB,html:not(#z)[data-pal=jr] #zvX{position:absolute!important;top:14px!important;width:42px!important;height:42px!important;margin:0!important;padding:0!important;display:grid!important;place-items:center;border-radius:50%!important;box-sizing:border-box;line-height:1;font-size:17px}
+html:not(#z)[data-pal=jr] #jrZB{left:14px!important}
+html:not(#z)[data-pal=jr] #zvX{right:14px!important;left:auto!important}
 </style>
 </head>
 <body>
@@ -2885,7 +2890,7 @@ $('lb').addEventListener('keydown',e=>{if(e.key==='ArrowLeft')lbShow(lbI-1);if(e
 function outsideClose(d){let dn=null;d.addEventListener('pointerdown',e=>{dn=e.target});d.addEventListener('click',e=>{if(e.target===d&&dn===d)d.close()})}
 outsideClose(dlg);
 let sx=null;$('lbS').addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true});
-$('lbS').addEventListener('touchend',e=>{if(sx===null)return;const d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>40)lbShow(lbI+(d<0?1:-1));sx=null});
+/* el deslizamiento de la ficha lo maneja el arrastre con el dedo; este quedaba doble */
 
 const discPct=p=>{const c=Number(p.compare_price),n=Number(p.price);return c>n&&n>0?Math.round((1-n/c)*100):0};
 function saveTag(p){const c=Number(p.compare_price),n=Number(p.price),d=discPct(p);return d?`<span class="old">${money(c)}</span><span class="save">Descuento -${d}%</span><span class="saved">Ahorras ${money(c-n)}</span>`:''}
