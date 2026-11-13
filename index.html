@@ -2246,6 +2246,22 @@ html:not(#z)[data-pal=jr] .jr-hcard h1{display:flex!important;align-items:center
 html:not(#z)[data-pal=jr] .jr-hcard h1 .jr-doo{position:static!important;flex:none;width:1.35em!important;height:1.35em!important;margin:0}
 
 @media(min-width:601px){html:not(#z)[data-pal=jr] .jr-hcard{width:min(480px,calc(100% - 2*var(--pad)))}html:not(#z)[data-pal=jr] .jr-hcard h1{white-space:nowrap}}
+
+/* tarjetas de categoría: el texto no se monta sobre la flecha */
+html:not(#z)[data-pal=jr] .jr-ec span{right:62px;min-width:0}
+html:not(#z)[data-pal=jr] .jr-ec small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:860px){html:not(#z)[data-pal=jr] .jr-ec span{right:48px}}
+/* visor: deslizar con el dedo */
+html[data-pal=jr] #zvM{touch-action:pan-y pinch-zoom}
+
+/* celular: Volver con aire a los lados y enlace de "Vistos en" visible completo */
+@media(max-width:600px){
+ html:not(#z)[data-pal=jr] body.pv .top .jrnav{margin:2px 0 4px!important;padding:0 6px!important;overflow:visible!important}
+ html:not(#z)[data-pal=jr] body.pv .jr-hback{margin:0!important}
+}
+@media(max-width:860px){
+ html:not(#z)[data-pal=jr] #jrSpotS .jr-hd .jr-lk{white-space:normal!important;justify-self:start!important;font-size:14px;line-height:1.4;max-width:100%;overflow-wrap:anywhere}
+}
 </style>
 </head>
 <body>
@@ -4445,6 +4461,8 @@ addEventListener('resize',jrStick);
 document.addEventListener('load',e=>{if(e.target.closest&&e.target.closest('#lbG'))jrStick()},true);
 /* visor de fotos: la rueda del mouse pasa a la foto siguiente o anterior, y flecha para volver */
 {const zv=$('zv');if(zv){const b=document.createElement('button');b.type='button';b.id='jrZB';b.setAttribute('aria-label','Volver');b.title='Volver';b.innerHTML=JR_BACK;b.onclick=()=>zv.close();zv.prepend(b);
+  {let x0=null,y0=0;const M=$('zvM')||zv;M.addEventListener('touchstart',e=>{if(e.touches.length!==1||$('zvI').classList.contains('z')){x0=null;return}x0=e.touches[0].clientX;y0=e.touches[0].clientY},{passive:true});
+   M.addEventListener('touchend',e=>{if(x0===null)return;const t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;x0=null;if(Math.abs(dx)<45||Math.abs(dx)<Math.abs(dy)*1.2||zA.length<2)return;zvShow((zI+(dx<0?1:-1)+zA.length)%zA.length)},{passive:true})}
   let cool=0,acc=0;zv.addEventListener('wheel',e=>{if($('zvI').classList.contains('z'))return;e.preventDefault();if(Date.now()<cool)return;acc+=e.deltaY;if(Math.abs(acc)<30)return;const d=acc>0?1:-1;acc=0;const n=zI+d;if(n<0||n>=zA.length)return;cool=Date.now()+380;zvShow(n)},{passive:false})}}
 {const _c=cartRender;cartRender=function(){const x=_c.apply(this,arguments);try{const n=cart.reduce((t,i)=>t+(+i.q||0),0),h=$('jrCartH');if(h)h.textContent=n?`(${n} ${n===1?'producto':'productos'})`:''}catch(e){}return x}}
 /* el fondo animado del panel Apariencia no se usa en este diseño */
