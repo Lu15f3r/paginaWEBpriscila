@@ -2187,6 +2187,25 @@ html[data-pal=jr] .jr-mf svg{width:16px;height:16px}
 @media(min-width:601px) and (max-width:860px){
  html:not(#z)[data-pal=jr] .jr-fcols{grid-template-columns:1fr 1fr 1fr!important;grid-template-areas:"tienda redes legal" "tienda contacto contacto"}
 }
+
+/* ajustes 13-nov (3) */
+/* celular: hamburguesa en la esquina izquierda, logo al centro, iconos a la derecha */
+@media(max-width:600px){
+ html:not(#z)[data-pal=jr] .top{grid-template-columns:1fr auto 1fr!important}
+ html:not(#z)[data-pal=jr] .top>.jr-burger{grid-column:1;grid-row:1;justify-self:start}
+ html:not(#z)[data-pal=jr] .top>a.jrlogo{grid-column:2!important;grid-row:1;justify-self:center!important}
+ html:not(#z)[data-pal=jr] .top .hr{grid-column:3!important;grid-row:1;justify-self:end}
+ html:not(#z)[data-pal=jr] .top .jrnav{grid-column:1/-1!important;grid-row:2}
+}
+/* beneficios en celular: 2 × 2 con líneas rectas y columnas iguales */
+@media(max-width:760px){
+ html:not(#z)[data-pal=jr] .jr-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:1px!important;background:var(--line);border:0!important;border-top:1px solid var(--line)!important;border-bottom:1px solid var(--line)!important}
+ html:not(#z)[data-pal=jr] .jr-row li{background:var(--bg);border:0!important;margin:0!important;justify-content:flex-start}
+}
+/* tablet: medios de pago a la derecha, sin espacio vacío */
+@media(min-width:601px) and (max-width:860px){
+ html:not(#z)[data-pal=jr] .jr-fcols{grid-template-areas:"tienda redes contacto" "tienda legal contacto"!important}
+}
 </style>
 </head>
 <body>
@@ -2201,7 +2220,7 @@ html[data-pal=jr] .jr-mf svg{width:16px;height:16px}
 
 
 <section class="fin jr-s jr-hide-sq" id="jrExpS" hidden><div class="jr-hd"><div class="jr-ht"><h2>Compra por categoría</h2><button type="button" class="jr-fil jr-filb" id="jrFil2">Filtrar</button></div><p>Ropa para ella y para él, bolsos, relojes y termos. Elige por dónde empezar.</p></div><div class="jr-exp" id="jrExpG"></div></section>
-<section class="fin jr-s jr-hide-sq" id="jrPromo" hidden><div class="jr-hd"><h2>Más estilo, más calidad, mejor precio</h2><p>Combina ropa, bolsos, relojes y termos en un mismo pedido y aprovecha el envío gratis. Despachamos a todo el país.</p></div><div class="jr-big"><span id="jrBigT">Envío gratis</span><span class="jr-ico" aria-hidden="true"></span></div><ul class="jr-row"><li>Ropa para mujer y hombre</li><li>Calidad garantizada</li><li>Envíos a toda Colombia</li><li class="jr-lock">Compra segura</li></ul><div class="jr-cta"><a href="#catalogo" class="jr-pill dark" id="jrPB" data-jk="all">Ver la tienda</a></div></section>
+<section class="fin jr-s jr-hide-sq" id="jrPromo" hidden><div class="jr-hd"><h2>Más estilo, más calidad, mejor precio</h2><p>Combina ropa, bolsos, relojes y termos en un mismo pedido y aprovecha el envío gratis. Despachamos a todo el país.</p></div><div class="jr-big"><span id="jrBigT">Envío gratis</span><span class="jr-ico" aria-hidden="true"></span></div><ul class="jr-row"><li>Ropa para mujer y hombre</li><li>Calidad garantizada</li><li>Envíos a toda Colombia</li><li>Compra segura</li></ul><div class="jr-cta"><a href="#catalogo" class="jr-pill dark" id="jrPB" data-jk="all">Ver la tienda</a></div></section>
 <section class="feat" aria-label="Beneficios de la tienda"><ul class="mq" id="mq"></ul></section>
 
 <div class="sectH"><div class="jr-cath"><h2>Lo más nuevo</h2><p>Ropa, bolsos, relojes y termos seleccionados con estilo propio. Elige tus favoritos y pídelos en minutos.</p></div><div class="jr-tabs" id="jrTabs" role="group" aria-label="Tipo de gorra"></div><div class="jr-bar"><span class="jr-n" id="jrN"></span><span class="jr-r"><button type="button" class="jr-fil" id="jrFil">Filtrar</button><label class="jr-sort">Ordenar por: <select id="jrSortS"><option value="rec">Recomendado</option><option value="nw">Lo más nuevo</option><option value="pa">Precio: menor a mayor</option><option value="pd">Precio: mayor a menor</option><option value="az">Nombre: A–Z</option></select></label></span></div></div>
@@ -4421,7 +4440,7 @@ try{jrBuild();cartRender()}catch(e){}
  const R=document.documentElement,open=v=>{R.classList.toggle('jr-mopen',v);m.setAttribute('aria-hidden',v?'false':'true');hb.setAttribute('aria-expanded',v?'true':'false')};
  const hb=document.createElement('button');hb.type='button';hb.className='jr-burger';hb.setAttribute('aria-label','Abrir menú');hb.setAttribute('aria-expanded','false');hb.setAttribute('aria-controls','jrMenu');
  hb.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';
- const hr=document.querySelector('.top .hr');if(hr)hr.appendChild(hb);
+ const tp=document.querySelector('header.top');if(tp)tp.prepend(hb);
  hb.onclick=()=>open(true);mo.onclick=()=>open(false);m.querySelector('.jr-mx').onclick=()=>open(false);
  m.addEventListener('click',e=>{if(e.target.closest('a,[data-jk],[data-jhb]')&&!e.target.closest('.jr-mx'))setTimeout(()=>open(false),10)});
  addEventListener('keydown',e=>{if(e.key==='Escape'&&R.classList.contains('jr-mopen'))open(false)});
