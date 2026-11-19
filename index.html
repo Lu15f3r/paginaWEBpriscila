@@ -2134,6 +2134,17 @@ html:not(#z)[data-pal=jr] .jr-ddt{display:none}
 html:not(#z) .jr-sups{width:100%;padding:12px 14px;font:inherit;font-size:15px;border-radius:12px;margin-top:6px}
 html:not(#z) .jr-supn{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 html:not(#z) .jr-supn input{flex:1 1 200px;min-width:0}
+
+/* Producto en computador: dos fotos lado a lado (como GX) + botones de redes con hover */
+@media(min-width:900px){
+html:not(#z)[data-pal=jr] #lb .lbb{grid-template-columns:minmax(0,1.7fr) minmax(320px,1fr)!important;justify-content:stretch}
+html:not(#z)[data-pal=jr] #lb #lbG.lbg{display:grid!important;grid-template-columns:1fr 1fr!important;gap:6px!important;align-items:start}
+html:not(#z)[data-pal=jr] #lb #lbG.lbg img{position:static!important;top:auto!important;width:100%!important;height:auto!important;aspect-ratio:4/5!important;object-fit:cover!important;margin:0!important;box-shadow:none!important}
+html:not(#z)[data-pal=jr] #lb #lbG.lbg img:only-child{grid-column:1/-1;aspect-ratio:auto!important;object-fit:contain!important}
+html:not(#z)[data-pal=jr] #lb .lbr{position:sticky;top:calc(var(--annh,32px) + var(--hh,66px) + 6px);align-self:start}
+}
+html:not(#z)[data-pal=jr] .jr-hsoc a{transition:background .2s,color .2s,border-color .2s,transform .2s}
+html:not(#z)[data-pal=jr] .jr-hsoc a:hover,html:not(#z)[data-pal=jr] .jr-hsoc a:focus-visible{background:var(--btn);color:var(--btnx);border-color:var(--btn);transform:translateY(-2px)}
 </style>
 </head>
 <body>
